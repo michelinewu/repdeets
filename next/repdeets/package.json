@@ -1,0 +1,24 @@
+{
+  "name": "learn-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "got": "^11.8.0",
+    "gray-matter": "^4.0.2",
+    "isomorphic-unfetch": "^3.1.0",
+    "needle": "^2.5.2",
+    "next": "^10.0.0",
+    "oauth-1.0a": "^2.2.6",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "twit": "^2.2.11",
+    "twitter": "^1.7.1",
+    "unfetch": "^4.2.0"
+  }
+}
