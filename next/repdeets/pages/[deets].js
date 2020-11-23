@@ -79,6 +79,7 @@ Deets.getInitialProps = async ({query}) => {
       headers: {
         "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
       }})
+  const repData = await rep.json()
 
   const votes = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}/votes.json`, {
       method: "GET",
@@ -86,37 +87,45 @@ Deets.getInitialProps = async ({query}) => {
       headers: {
         "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
       }})
+  const voteData = await votes.json()
+
   const cosponsoredBills = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}/bills/cosponsored.json`, {
     method: "GET",
     dataType: 'json',
     headers: {
       "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
     }})
+  const billData = await cosponsoredBills.json()
+
   const personalExplanations = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}/explanations/115/votes.json`, {
     method: "GET",
     dataType: 'json',
     headers: {
       "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
     }})
+  const explanationData = await personalExplanations.json()
+
   const officeStatements = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}/statements/115.json`, {
     method: "GET",
     dataType: 'json',
     headers: {
       "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
     }})
-
-
-  const repData = await rep.json()
-  const voteData = await votes.json()
-  const billData = await cosponsoredBills.json()
-  const explanationData = await personalExplanations.json()
   const statementData = await officeStatements.json()
 
+
+  process.env.REACT_APP_NEWS_API_KEY
+
+  const representative = repData.results[0]
+  const name = [representative.first_name, representative.middle_name, representative.last_name].join('+')
+
+
+
   const url = 'http://newsapi.org/v2/everything?' +
-  'q=Kamala+Harris&' +
+  `q=${name}&` +
   // 'start=2019-08-01&end=2020-11-23' +
   'sortBy=popularity&' +
-  'apiKey=a86349aff4d04c6c81e04c28df0f6ba3';
+  `apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
 
   // NEWS
 
@@ -225,7 +234,7 @@ const parseDataForDisplay = (props) => {
     dataToDisplay.push(statementObj)
   })
 
-  if (tweets) {
+  if (tweets.length > 0) {
     tweets.map((tweet) => {
       const tweetObj = {
         type: "twitter",
