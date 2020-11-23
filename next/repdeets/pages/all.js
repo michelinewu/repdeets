@@ -5,53 +5,41 @@ import {Component} from 'react'
 
 export default class All extends Component {
 
-  static async getInitialProps (context) {
+  // static async getInitialProps (context) {
 
-    const senate = await fetch('https://api.propublica.org/congress/v1/116/senate/members.json', {
-      method: "GET",
-      dataType: 'json',
-      headers: {
-        "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
-      }})
+  //   const senate = await fetch('https://api.propublica.org/congress/v1/116/senate/members.json', {
+  //     method: "GET",
+  //     dataType: 'json',
+  //     headers: {
+  //       "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
+  //     }})
 
-    const congress = await fetch('https://api.propublica.org/congress/v1/116/house/members.json', {
-    method: "GET",
-    dataType: 'json',
-    headers: {
-      "X-API-Key": "REACT_APP_PROPUBLICA_KEY"
-    }})
+  //   const congress = await fetch('https://api.propublica.org/congress/v1/116/house/members.json', {
+  //   method: "GET",
+  //   dataType: 'json',
+  //   headers: {
+  //     "X-API-Key": "REACT_APP_PROPUBLICA_KEY"
+  //   }})
 
-    const votes = await fetch(`https://api.propublica.org/congress/v1/members/C001084/votes.json`, {
-      method: "GET",
-      dataType: 'json',
-      headers: {
-        "X-API-Key": "REACT_APP_PROPUBLICA_KEY"
-      }})
+  //   const votes = await fetch(`https://api.propublica.org/congress/v1/members/C001084/votes.json`, {
+  //     method: "GET",
+  //     dataType: 'json',
+  //     headers: {
+  //       "X-API-Key": "REACT_APP_PROPUBLICA_KEY"
+  //     }})
 
-      const voteData = await votes.json()
+  //     const voteData = await votes.json()
 
-    console.log ('votes = ', voteData)
+  //   console.log ('votes = ', voteData)
 
-    // console.log('fetched senate', senate)
+  //   const senateData = await senate.json()
+  //   const congressData = await congress.json()
 
-    const senateData = await senate.json()
-    const congressData = await congress.json()
-    // console.log('senate fetched = ', senateData)
-    // console.log('senate members = ', senateData.members)
-    // console.log('congress fetched = ', congressData)
-
-    // const reps = {
-    //   senate: {...senateData},
-    //   congress: {...congressData}
-    // }
-
-    // console.log('reps = ', reps)
-
-    return {
-      senate: senateData,
-      house: congressData
-    }
-  }
+  //   return {
+  //     senate: senateData,
+  //     house: congressData
+  //   }
+  // }
 
   render() {
 

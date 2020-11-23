@@ -25,8 +25,8 @@ const Deets = (props) => {
 
   // console.log('official = ', props.official)
   const data = parseDataForDisplay(props)
-  console.log('twitter data ', props.twitter)
-  console.log('news data ', props.news)
+  // console.log('twitter data ', props.twitter)
+  // console.log('news data ', props.news)
   console.log('data returned: ', data)
 
   return (
@@ -52,10 +52,12 @@ const Deets = (props) => {
   );
 };
 
+// FETCH DATA
+
 Deets.getInitialProps = async ({query}) => {
 
   // PRO PUBLICA
-  const proPublicaID = query.deets
+  const proPublicaID = query.deets.slice(2)
 
   const rep = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}.json`, {
       method: "GET",
@@ -112,8 +114,8 @@ Deets.getInitialProps = async ({query}) => {
   // NEWS
 
   const url = 'http://newsapi.org/v2/everything?' +
-          'q=Apple&' +
-          'from=2020-11-23&' +
+          'q=Kamala+Harris&' +
+          // 'start=2019-08-01&end=2020-11-23' +
           'sortBy=popularity&' +
           'apiKey=a86349aff4d04c6c81e04c28df0f6ba3';
 
@@ -137,12 +139,16 @@ Deets.getInitialProps = async ({query}) => {
   }
 }
 
+// PARSE DATA
+
 const parseDataForDisplay = (props) => {
 
   const votes = props.votes.results[0].votes
   const bills = props.bills.results[0].bills
   const explanations = props.explanations.results
   const statements = props.statements.results
+  const tweets = props.twitter
+  const newsArticles = props.news.articles
 
   const dataToDisplay = []
 
@@ -195,6 +201,28 @@ const parseDataForDisplay = (props) => {
       url: statement.url,
     }
     dataToDisplay.push(statementObj)
+  })
+
+  tweets.map((tweet) => {
+    const tweetObj = {
+      type: "twitter",
+      date: tweet.created_at,
+      // url: tweet.entities.urls[0], // not sure about this, will have to test
+      text: tweet.text
+    }
+    dataToDisplay.push(tweetObj)
+  })
+
+  newsArticles.map((article) => {
+    const newsObj = {
+      type: "news",
+      date: article.publishedAt,
+      source: article.source.name,
+      title: article.title,
+      author: article.author,
+      url: article.url
+    }
+    dataToDisplay.push(newsObj)
   })
 
   dataToDisplay.sort(function(a,b){
