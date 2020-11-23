@@ -25,7 +25,7 @@ const Deets = (props) => {
 
   // console.log('official = ', props.official)
   const data = parseDataForDisplay(props)
-
+  console.log('twitter data ', props.twitter)
   console.log('data returned: ', data)
 
   return (
@@ -98,11 +98,31 @@ Deets.getInitialProps = async ({query}) => {
   // TWITTER
   const twitterHandle = repData.results[0].twitter_account
 
-  // var client = new Twitter({
-  //   consumer_key: '',
-  //   consumer_secret: '',
-  //   bearer_token: ''
+  const bearer = "Bearer "+process.env.REACT_APP_TWITTER_BEARER_TOKEN
+  const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kamalaharris&count=2`, {
+    method: "GET",
+    dataType: 'json',
+    headers: {
+      "Authorization": bearer
+    }})
+
+    const twitterData = await tweets.json()
+  // const client = new Twitter({
+  //   consumer_key: process.env.REACT_APP_TWITTER_API_KEY,
+  //   consumer_secret: process.env.REACT_APP_TWITTER_API_SECRET,
+  //   bearer_token: process.env.REACT_APP_TWITTER_BEARER_TOKEN
   // });
+
+  // will use twitterHandle in future
+  // const params = {screen_name: 'KamalaHarris'}
+
+  // const twitterData = []
+
+  // client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  //   if (!error) {
+  //     twitterData = tweets
+  //   }
+  // })
 
   // console.log ('votes = ', voteData)
   // console.log ('bills = ', billData)
@@ -115,7 +135,7 @@ Deets.getInitialProps = async ({query}) => {
     bills: billData,
     explanations: explanationData,
     statements: statementData,
-    // twitter:
+    twitter: twitterData
   }
 }
 
