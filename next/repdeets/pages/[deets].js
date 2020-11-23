@@ -26,6 +26,7 @@ const Deets = (props) => {
   // console.log('official = ', props.official)
   const data = parseDataForDisplay(props)
   console.log('twitter data ', props.twitter)
+  console.log('news data ', props.news)
   console.log('data returned: ', data)
 
   return (
@@ -98,36 +99,32 @@ Deets.getInitialProps = async ({query}) => {
   // TWITTER
   const twitterHandle = repData.results[0].twitter_account
 
-  const bearer = "Bearer "+process.env.REACT_APP_TWITTER_BEARER_TOKEN
-  const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kamalaharris&count=2`, {
+  const bearer = "Bearer " + process.env.REACT_APP_TWITTER_BEARER_TOKEN
+  const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kamalaharris&count=100`, {
     method: "GET",
     dataType: 'json',
     headers: {
       "Authorization": bearer
     }})
 
-    const twitterData = await tweets.json()
-  // const client = new Twitter({
-  //   consumer_key: process.env.REACT_APP_TWITTER_API_KEY,
-  //   consumer_secret: process.env.REACT_APP_TWITTER_API_SECRET,
-  //   bearer_token: process.env.REACT_APP_TWITTER_BEARER_TOKEN
-  // });
+  const twitterData = await tweets.json()
 
-  // will use twitterHandle in future
-  // const params = {screen_name: 'KamalaHarris'}
+  // NEWS
 
-  // const twitterData = []
+  const url = 'http://newsapi.org/v2/everything?' +
+          'q=Apple&' +
+          'from=2020-11-23&' +
+          'sortBy=popularity&' +
+          'apiKey=a86349aff4d04c6c81e04c28df0f6ba3';
 
-  // client.get('statuses/user_timeline', params, function(error, tweets, response) {
-  //   if (!error) {
-  //     twitterData = tweets
-  //   }
-  // })
+  const newsArticles = await fetch(url, {
+    method: "GET",
+    dataType: 'json',
+    headers: {
+      "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
+    }})
 
-  // console.log ('votes = ', voteData)
-  // console.log ('bills = ', billData)
-  // console.log ('explanations = ', explanationData)
-  // console.log ('statements = ', statementData)
+  const newsData = await newsArticles.json()
 
   return {
     rep: repData,
@@ -135,7 +132,8 @@ Deets.getInitialProps = async ({query}) => {
     bills: billData,
     explanations: explanationData,
     statements: statementData,
-    twitter: twitterData
+    twitter: twitterData,
+    news: newsData
   }
 }
 
