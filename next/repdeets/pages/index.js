@@ -16,7 +16,7 @@ export default function Home(props) {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <Link as={`/${senate[37].id}`} href="/[deets]"> Test Harris</Link>
+      <Link as={`/S-${senate[37].id}`} href="/[deets]"> Test Harris</Link>
       <section className={utilStyles.headingMd}>
         <h2 className={utilStyles.headingLg}>Senate</h2>
           {senate.map((rep) => (

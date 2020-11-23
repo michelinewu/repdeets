@@ -22,42 +22,56 @@ const Deets = (props) => {
   // console.log('rq = ', rq)
 
   // console.log('props = ', props)
-
-  // console.log('official = ', props.official)
   const data = parseDataForDisplay(props)
-  // console.log('twitter data ', props.twitter)
-  // console.log('news data ', props.news)
-  console.log('data returned: ', data)
+  // console.log('data returned: ', data)
+
+  const rep = props.rep.results[0]
+  const name = [rep.first_name, rep.middle_name, rep.last_name].join(' ')
+  const title = `${rep.roles[0].title.split(' ', 2)[0]} ${rep.roles[0].state}`
 
   return (
 
     <div>
        <Layout>
          <Head>
-             <title>New York Representatives</title>
+          <title>{name}</title>
          </Head>
-         <h1>New York Representatives</h1>
+         <h1>{name}</h1>
+         <h2>{title}</h2>
+         <h5> <Link href="/"><a>Back to home</a></Link></h5>
          Data here
-         {data.map((row) => {
-            <RenderData id = {row.id} props={row.props} />
+         {data.map((row) => (
+           <div>
+              <RenderData row={row} />
+          </div>
+
+           ))}
+         {/* {data.map((row) => {
+            <div>
+              Rendering
+              <RenderData props={row} />
+            </div>
+
             }
-         )}
+         )} */}
         <h2>
-          <Link href="/">
+          <Link as="/" href="/index">
             <a>Back to home</a>
           </Link>
         </h2>
       </Layout>
     </div>
-  );
-};
+  )
+}
 
 // FETCH DATA
 
 Deets.getInitialProps = async ({query}) => {
 
   // PRO PUBLICA
+  console.log(query.deets)
   const proPublicaID = query.deets.slice(2)
+  console.log(proPublicaID)
 
   const rep = await fetch(`https://api.propublica.org/congress/v1/members/${proPublicaID}.json`, {
       method: "GET",
@@ -98,35 +112,42 @@ Deets.getInitialProps = async ({query}) => {
   const explanationData = await personalExplanations.json()
   const statementData = await officeStatements.json()
 
-  // TWITTER
-  const twitterHandle = repData.results[0].twitter_account
+  const url = 'http://newsapi.org/v2/everything?' +
+  'q=Kamala+Harris&' +
+  // 'start=2019-08-01&end=2020-11-23' +
+  'sortBy=popularity&' +
+  'apiKey=a86349aff4d04c6c81e04c28df0f6ba3';
 
-  const bearer = "Bearer " + process.env.REACT_APP_TWITTER_BEARER_TOKEN
-  const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kamalaharris&count=100`, {
+  // NEWS
+
+  const newsArticles = await fetch(url, {
+  method: "GET",
+  dataType: 'json',
+  headers: {
+  "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
+  }})
+
+  const newsData = await newsArticles.json()
+
+  // TWITTER
+
+  let twitterData = null;
+
+  if (repData.results[0].twitter_account !== null) {
+    // if there is a twitter
+
+    const twitterHandle = repData.results[0].twitter_account
+
+    const bearer = "Bearer " + process.env.REACT_APP_TWITTER_BEARER_TOKEN
+    const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${twitterHandle}&count=100`, {
     method: "GET",
     dataType: 'json',
     headers: {
       "Authorization": bearer
     }})
 
-  const twitterData = await tweets.json()
-
-  // NEWS
-
-  const url = 'http://newsapi.org/v2/everything?' +
-          'q=Kamala+Harris&' +
-          // 'start=2019-08-01&end=2020-11-23' +
-          'sortBy=popularity&' +
-          'apiKey=a86349aff4d04c6c81e04c28df0f6ba3';
-
-  const newsArticles = await fetch(url, {
-    method: "GET",
-    dataType: 'json',
-    headers: {
-      "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
-    }})
-
-  const newsData = await newsArticles.json()
+    twitterData = await tweets.json()
+  }
 
   return {
     rep: repData,
@@ -137,6 +158,7 @@ Deets.getInitialProps = async ({query}) => {
     twitter: twitterData,
     news: newsData
   }
+  return { rep: 'rep'}
 }
 
 // PARSE DATA
@@ -203,15 +225,17 @@ const parseDataForDisplay = (props) => {
     dataToDisplay.push(statementObj)
   })
 
-  tweets.map((tweet) => {
-    const tweetObj = {
-      type: "twitter",
-      date: tweet.created_at,
-      // url: tweet.entities.urls[0], // not sure about this, will have to test
-      text: tweet.text
-    }
-    dataToDisplay.push(tweetObj)
-  })
+  if (tweets) {
+    tweets.map((tweet) => {
+      const tweetObj = {
+        type: "twitter",
+        date: tweet.created_at,
+        // url: tweet.entities.urls[0], // not sure about this, will have to test
+        text: tweet.text
+      }
+      dataToDisplay.push(tweetObj)
+    })
+  }
 
   newsArticles.map((article) => {
     const newsObj = {
@@ -226,16 +250,11 @@ const parseDataForDisplay = (props) => {
   })
 
   dataToDisplay.sort(function(a,b){
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
+    // Turn strings into dates, and then subtract
     return new Date(b.date) - new Date(a.date);
   });
 
   return dataToDisplay
-  // console.log ('votes = ', votes)
-  // console.log ('bills = ', bills)
-  // console.log ('explanations = ', explanations)
-  // console.log ('statements = ', statements)
 }
 
 export default Deets
