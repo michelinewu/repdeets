@@ -25,7 +25,7 @@ const Deets = (props) => {
           method: "GET",
           dataType: 'json',
           headers: {
-            "X-API-Key": "TGkh3C1itWVndTQszOjzlCR9IeVmKzl0B2ahqay6"
+            "X-API-Key": process.env.REACT_APP_PROPUBLICA_KEY
           }
         }
 
@@ -70,13 +70,13 @@ const Deets = (props) => {
         `q=${name}&` +
         // 'start=2019-08-01&end=2020-11-23' +
         'sortBy=popularity&' +
-        `apiKey=a86349aff4d04c6c81e04c28df0f6ba3`;
+        `apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
 
         const newsData = await axios.get(url, {
         method: "GET",
         dataType: 'json',
         headers: {
-        "X-Api-Key": "a86349aff4d04c6c81e04c28df0f6ba3"
+        "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
         }})
 
         // TWITTER
