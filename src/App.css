@@ -1,38 +1,160 @@
-.App {
+/* .App {
   text-align: center;
-}
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.15em;
+} */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* .header {
+  font-family: 'Arimo', sans-serif;
+  font-weight: 700;
+  font-size: 6em;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  /* font-size: calc(10px + 2vmin); */
+  /* color: #E3E4E4;
+} */
+
+/* .main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}  */
+
+/* a {
+  color: #073590;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 900;
+  text-decoration: none;
 }
 
-.App-link {
+a :hover{
+  font-family: 'Courgette', cursive;
+  color: darkred;
+}
+
+button :hover {
   color: #61dafb;
+} */
+
+img {
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.deets-stats{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 1.25em;
+  margin-top: 7px;
+}
+
+.stack {
+  position: relative;
+}
+
+.top {
+  position: absolute;
+  top:0px;
+  left: 0px;
+  z-index: 2;
+}
+
+.bottom {
+  position: absolute;
+  top:0px;
+  left: 0px;
+  background-color:#073590;
+  z-index: 1;
+}
+
+/* .top :hover{
+  position: absolute;
+  top:0px;
+  left: 0px;
+  z-index: -1;
+} */
+
+/* .bottom {
+  position: absolute;
+  top:0px;
+  left: 0px;
+  font-family: 'Courgette', cursive;
+  color: darkred;
+  background-color:#073590;
+  z-index:0;
+  transition: font-family 1.66s linear;
+} */
+
+/* .bottom :hover{
+  transition: font-family 1.66s linear;
+  z-index: 2;
+  font-family: 'Courgette', cursive;
+  color: darkred;
+
+} */
+
+.deet {
+  background-color: #E3E4E4;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  min-width: 50%;
+  max-width: 1000px;
+  padding: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: left;
+  align-content:flex-start;
+  flex-wrap: wrap;
+}
+
+.id-card {
+  position: relative;
+  height: 100%;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+}
+
+.stats {
+  background-color: #E3E4E4;
+  border-radius: 5px;
+  min-width: 50%;
+  max-width: 1000px;
+  margin-bottom: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* TWIDDLE */
+
+button.button {
+  border-radius: 100rem;
+  padding: 1rem;
+  font-family: 'Avenir Next';
+  font-size: 1rem;
+  padding: .5rem 3rem;
+  color: $color-black;
+  box-shadow: 0 0 6px 0 rgba(157, 96, 212, 0.5);
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #fff inset;
+}
+
+button.button:hover {
+  box-shadow: none;
+  color: white;
 }

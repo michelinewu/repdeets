@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Repdeets",
+  "name": "What your representative does and says, and only that.",
   "icons": [
     {
       "src": "favicon.ico",
