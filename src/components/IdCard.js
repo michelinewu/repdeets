@@ -1,55 +1,43 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 
 import Button from '../theme/Button'
 
-// import anime from 'animejs'
+import anime from 'animejs'
 
 export const IdCard = (props) => {
 
-  // const [statsShown, setStatsShown] = useState(false)
+  const [statsShown, showStats] = useState(false)
 
-  // const flipCard = (event) => {
-  //   event.preventDefault()
-  //   console.log('event.target.id ', event.target.repId)
-  //   const repId = event.target.repId
+  const flipCard = () => {
+    const card = document.getElementById(id)
 
-  //   if (statsShown) return
+    if (statsShown) {
+      anime({
+        targets: card,
+        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+        rotateY: {value: '+=180', delay: 200},
+        easing: 'easeInOutSine',
+        duration: 400,
+        complete: function(anim){
+          showStats(false)
+        }
+      })
+    } else {
+      anime({
+        targets: card,
+        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+        rotateY: {value: '+=180', delay: 200},
+        easing: 'easeInOutSine',
+        duration: 600,
+        complete: function(anim){
+          showStats(true)
+        }
+      })
+    }
 
-  //   setStatsShown(true)
-  //   anime({
-  //     targets: repId,
-  //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-  //     rotateY: {value: '+=180', delay: 200},
-  //     easing: 'easeInOutSine',
-  //     duration: 400,
-  //     complete: function(anim){
-  //       setStatsShown(false)
-  //     }
-  //   });
-  // }
-
-
-  // var card = document.querySelector(".card");
-  // var playing = false;
-
-  // card.addEventListener('click',function() {
-  //   if(playing)
-  //     return;
-
-  //   playing = true;
-  //   anime({
-  //     targets: card,
-  //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-  //     rotateY: {value: '+=180', delay: 200},
-  //     easing: 'easeInOutSine',
-  //     duration: 400,
-  //     complete: function(anim){
-  //       playing = false;
-  //     }
-  //   });
-  // });
+  }
 
   const {id, title, state, district, first_name, middle_name, last_name, suffix, url} = props
 
@@ -67,63 +55,112 @@ export const IdCard = (props) => {
   // image url unitedstates.io
   // const imageUrl = `https://theunitedstates.io/images/congress/225x275/${id}.jpg`
 
-  return (
-    <Container>
-      <RepName>{name}</RepName>
-      <ImageCrop>
-        <Headshot src={imageUrl ? imageUrl : "http://localhost:3000/images/default-headshot.png"} />
-      </ImageCrop>
-      <Table>
-        <Row><Heading>Role:</Heading>
-          <Info>
-            {title === "Representative" ? "Representative of Congress" : title}
-          </Info>
-        </Row>
-        <Row>
-          <Heading>State:</Heading><Info>{state}</Info>
-          {district ?
-            <span>, District {district}</span>
-            : <></>
-          }
-        </Row>
-        <Row><Heading>Party:</Heading><Info>{party}</Info></Row>
-      </Table>
-      <MoreInfo>
-        {/* <NavButton href={`/${id}`}>deets</NavButton> */}
-        <NavLink to={`/${id}`} className="deets-button">deets</NavLink>
-        {/* <Button>stats</Button> */}
-        <Button href={url} target="_blank">site</Button>
-      </MoreInfo>
+  // missed_votes={rep.missed_votes}
+  //             missed_votes_pct={rep.missed_votes_pct}
+  //             total_votes={rep.total_votes}
+  //             votes_against_party_pct={rep.votes_against_party_pct}
+  //             votes_with_party_pct={rep.votes_with_party_pct}
 
+  return (
+    <Container id={id}>
+      <Card>
+        {statsShown ?
+        <StatsContainer>
+          <RepName>Stats</RepName>
+          <MoreInfo>
+              {/* <NavButton href={`/${id}`}>deets</NavButton> */}
+              <NavLink to={`/${id}`} className="deets-button">deets</NavLink>
+              <StatsButton onClick={() => flipCard(id)}>info</StatsButton>
+              <Button href={url} target="_blank">site</Button>
+            </MoreInfo>
+          </StatsContainer> :
+          <IDContainer>
+            <RepName>{name}</RepName>
+            <ImageCrop>
+              <Headshot src={imageUrl ? imageUrl : "http://localhost:3000/images/default-headshot.png"} />
+            </ImageCrop>
+            <Table>
+              <Row><Heading>Role:</Heading>
+                <Info>
+                  {title === "Representative" ? "Representative of Congress" : title}
+                </Info>
+              </Row>
+              <Row>
+                <Heading>State:</Heading><Info>{state}</Info>
+                {district ?
+                  <span>, District {district}</span>
+                  : <></>
+                }
+              </Row>
+              <Row><Heading>Party:</Heading><Info>{party}</Info></Row>
+            </Table>
+            <MoreInfo>
+              <NavLink to={`/${id}`} className="deets-button">deets</NavLink>
+              <StatsButton onClick={() => flipCard(id)}>stats</StatsButton>
+              <Button href={url} target="_blank">site</Button>
+            </MoreInfo>
+          </IDContainer>
+        }
+      </Card>
     </Container>
   )
 }
 
 export default IdCard
 
-// Move to global
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items:center;
   flex-wrap: wrap;
+  // position: relative;
   background-color: #ffffff;
-  width: 400px;
+  width: 380px;
   margin-bottom: 60px;
   margin-right: 20px;
   margin-left: 20px;
-  padding-bottom: 30px;
 
-  // justify-content: center;
-  // text-align: center;
-  // border-radius: 1px;
-  // height: 200px;
-  // padding-left: 12px;
-  // padding-right: 12px;
-  // border: 3px solid #F7F7FF;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  perspective: 1400px;
+
+`
+const Card = styled.div`
+  position: relative;
+  height: 100%;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  padding-bottom: 30px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  // background-color: #ffffff;
+  // -webkit-backface-visibility: hidden;
+  // backface-visibility: hidden;
 `
 
+const IDContainer = styled.div`
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  flex-wrap: wrap;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  // z-index: 1;
+`
+const StatsContainer = styled.div`
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  flex-wrap: wrap;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+  z-index: 3;
+
+  transform: rotateY(180deg);
+
+`
 const RepName = styled.h1`
   background-color: #242424;
   font-size: 1.15em;
@@ -186,17 +223,16 @@ const ImageCrop = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 `
-
 const Headshot = styled.img`
   width: 100%;
   height: auto;
 `
-
 const MoreInfo = styled.div`
-  display:flex;
+  display: flex;
   justify-content: space-between;
+  // position: absolute;
+  // bottom: 0px;
 `
-
 const Table = styled.div`
   display: flex;
   flex-direction: column;
@@ -219,4 +255,34 @@ const Heading = styled.div`
 const Info = styled.div`
   text-align: left;
   width: auto;
+`
+const StatsButton = styled.div`
+  width: 80px;
+  background-color: #a1a1a1;
+  color: #ffffff;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05em;
+  letter-spacing: 1.45px;
+  font-weight: 750;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  text-align: center;
+  border: 0px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  a {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+  }
+
+  :hover {
+    background-color: #242424;
+  }
+
+  :focus {
+    outline: 1px solid #6d6d6e;
+  }
 `

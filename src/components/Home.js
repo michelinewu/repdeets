@@ -35,10 +35,12 @@ const Home = (props) => {
         //   .concat(congressData.data.results[0].members)
         const reps = senateData.data.results[0].members
 
-        setInitialQuery (reps)
+        console.log(reps)
+
+        setInitialQuery(reps)
 
         // eventually will show the last 30 reps queried on initial render but for now:
-        setRepsShown (reps)
+        setRepsShown(reps)
       }
       fetchReps()
     }
@@ -150,6 +152,11 @@ const Home = (props) => {
               suffix={rep.suffix}
               party={rep.party}
               url={rep.url}
+              missed_votes={rep.missed_votes}
+              missed_votes_pct={rep.missed_votes_pct}
+              total_votes={rep.total_votes}
+              votes_against_party_pct={rep.votes_against_party_pct}
+              votes_with_party_pct={rep.votes_with_party_pct}
             />
             )
           }
