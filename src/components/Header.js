@@ -24,7 +24,8 @@ const Heading = styled.div`
   font-weight: 900;
   padding-top: 20px;
   width: 100%;
-  background-color: #adb3bb;
+  // background-color: #adb3bb;
+  background-color: #242424;
 `
 
 // const Logo = styled.img`

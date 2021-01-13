@@ -3,6 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 
 import IdCard from './IdCard'
+import Loading from './Loading'
 import Dropdown from './Dropdown'
 import { set } from 'animejs'
 
@@ -12,6 +13,7 @@ const Home = (props) => {
   *   USESTATE & USEEFFECT
   */
 
+  const [loading, setLoading] = useState(true)
   const [repsShown, setRepsShown] = useState([])
   const [initialQuery, setInitialQuery] = useState([])
   const [chamberMenuShown, setChamberMenu] = useState([false])
@@ -35,15 +37,19 @@ const Home = (props) => {
           .concat(congressData.data.results[0].members)
         // const reps = senateData.data.results[0].members
 
-        console.log(reps)
+        // console.log(reps)
 
         setInitialQuery(reps)
 
         // eventually will show the last 30 reps queried on initial render but for now:
         setRepsShown(reps)
+
+        // turn off loading animation
+        setLoading(false)
       }
       fetchReps()
     }
+
   }, [])
 
   /*
@@ -129,39 +135,43 @@ const Home = (props) => {
 
   return (
     <>
-    <PageHeading>Representatives</PageHeading>
-    {/* <Filters>Sort by:
-      <Dropdown menuName='Chamber' menuItems={chambers} callBack={filterReps}/>
-      <Dropdown menuName='State' menuItems={states} callBack={filterReps}/>
-      <Dropdown menuName='Last Name' menuItems={alphabet} callBack={filterReps}/>
-    </Filters> */}
-    {/* <Search>Sort by: Chamber State</Search> */}
-      <div className = "main">
-        {repsShown.map((rep) => {
-          if (prevBioId !== rep.id) {
-            prevBioId = rep.id
-            return (
-              <IdCard key={rep.id}
-              id={rep.id}
-              title={rep.title}
-              state={rep.state}
-              district={rep.ocd_id.split('cd:')[1]}
-              first_name={rep.first_name}
-              middle_name={rep.middle_name}
-              last_name={rep.last_name}
-              suffix={rep.suffix}
-              party={rep.party}
-              url={rep.url}
-              missed_votes={rep.missed_votes}
-              missed_votes_pct={rep.missed_votes_pct}
-              total_votes={rep.total_votes}
-              votes_against_party_pct={rep.votes_against_party_pct}
-              votes_with_party_pct={rep.votes_with_party_pct}
-            />
-            )
-          }
-        })}
-      </div>
+    <Tagline>What your reps do and say, and only that.</Tagline>
+    {loading ? <Loading /> :
+    <AllReps>
+      <PageHeading>Representatives</PageHeading>
+      {/* <Filters>Sort by:
+        <Dropdown menuName='Chamber' menuItems={chambers} callBack={filterReps}/>
+        <Dropdown menuName='State' menuItems={states} callBack={filterReps}/>
+        <Dropdown menuName='Last Name' menuItems={alphabet} callBack={filterReps}/>
+      </Filters> */}
+      {/* <Search>Sort by: Chamber State</Search> */}
+        <div className = "main">
+          {repsShown.map((rep) => {
+            if (prevBioId !== rep.id) {
+              prevBioId = rep.id
+              return (
+                <IdCard key={rep.id}
+                id={rep.id}
+                title={rep.title}
+                state={rep.state}
+                district={rep.ocd_id.split('cd:')[1]}
+                first_name={rep.first_name}
+                middle_name={rep.middle_name}
+                last_name={rep.last_name}
+                suffix={rep.suffix}
+                party={rep.party}
+                url={rep.url}
+                missed_votes={rep.missed_votes}
+                missed_votes_pct={rep.missed_votes_pct}
+                total_votes={rep.total_votes}
+                votes_against_party_pct={rep.votes_against_party_pct}
+                votes_with_party_pct={rep.votes_with_party_pct}
+              />
+              )
+            }
+          })}
+        </div>
+      </AllReps>}
     </>
   )
 }
@@ -174,7 +184,11 @@ const PageHeading = styled.h1`
   font-weight: 800;
   font-family: 'Arimo', sans-serif;
 `
-
+const AllReps = styled.div`
+`
+const Tagline = styled.div`
+  padding-top: 50px;
+`
 const Filters = styled.div`
   display: flex;
   flex-direction: row;
