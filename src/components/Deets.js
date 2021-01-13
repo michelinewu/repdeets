@@ -65,20 +65,20 @@ const Deets = (props) => {
 
         // NEWS API
 
-        const name = [repInfo.data.results[0].first_name, repInfo.data.results[0].middle_name, repInfo.data.results[0].last_name].join('+')
+        // const name = [repInfo.data.results[0].first_name, repInfo.data.results[0].middle_name, repInfo.data.results[0].last_name].join('+')
 
-        const url = 'http://newsapi.org/v2/everything?' +
-        `q=${name}&` +
-        // 'start=2019-08-01&end=2020-11-23' +
-        'sortBy=popularity&' +
-        `apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
+        // const url = 'http://newsapi.org/v2/everything?' +
+        // `q=${name}&` +
+        // // 'start=2019-08-01&end=2020-11-23' +
+        // 'sortBy=popularity&' +
+        // `apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
 
-        const newsData = await axios.get(url, {
-        method: "GET",
-        dataType: 'json',
-        headers: {
-        "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
-        }})
+        // const newsData = await axios.get(url, {
+        // method: "GET",
+        // dataType: 'json',
+        // headers: {
+        // "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
+        // }})
 
         const initialQueryResults = {
           rep: repInfo.data,
@@ -86,7 +86,7 @@ const Deets = (props) => {
           bills: billData.data.results[0].bills,
           explanations: explanationData.data.results,
           statements: statementData.data.results,
-          news: newsData.data.articles
+          // news: newsData.data.articles
         }
 
         setRepData (initialQueryResults)
@@ -208,18 +208,18 @@ const parseDataForDisplay = (data) => {
     dataToDisplay.push(statementObj)
   })
 
-  news.map((article) => {
-    const newsObj = {
-      key: "N" + news.indexOf(article),
-      type: "news",
-      date: article.publishedAt,
-      source: article.source.name,
-      title: article.title,
-      author: article.author,
-      url: article.url
-    }
-    dataToDisplay.push(newsObj)
-  })
+  // news.map((article) => {
+  //   const newsObj = {
+  //     key: "N" + news.indexOf(article),
+  //     type: "news",
+  //     date: article.publishedAt,
+  //     source: article.source.name,
+  //     title: article.title,
+  //     author: article.author,
+  //     url: article.url
+  //   }
+  //   dataToDisplay.push(newsObj)
+  // })
 
   dataToDisplay.sort(function(a,b){
     // Turn strings into dates, and then subtract
