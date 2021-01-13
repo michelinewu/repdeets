@@ -11,31 +11,36 @@ export const IdCard = (props) => {
   const [statsShown, showStats] = useState(false)
 
   const flipCard = () => {
-    const card = document.getElementById(id)
-
     if (statsShown) {
-      anime({
-        targets: card,
-        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-        rotateY: {value: '+=180', delay: 200},
-        easing: 'easeInOutSine',
-        duration: 400,
-        complete: function(anim){
-          showStats(false)
-        }
-      })
+      showStats(false)
     } else {
-      anime({
-        targets: card,
-        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-        rotateY: {value: '+=180', delay: 200},
-        easing: 'easeInOutSine',
-        duration: 600,
-        complete: function(anim){
-          showStats(true)
-        }
-      })
+      showStats(true)
     }
+    // const card = document.getElementById(id)
+
+    // if (statsShown) {
+    //   anime({
+    //     targets: card,
+    //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+    //     rotateY: {value: '+=180', delay: 200},
+    //     easing: 'easeInOutSine',
+    //     duration: 400,
+    //     complete: function(anim){
+    //       showStats(false)
+    //     }
+    //   })
+    // } else {
+    //   anime({
+    //     targets: card,
+    //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+    //     rotateY: {value: '+=180', delay: 200},
+    //     easing: 'easeInOutSine',
+    //     duration: 600,
+    //     complete: function(anim){
+    //       showStats(true)
+    //     }
+    //   })
+    // }
 
   }
 
@@ -164,7 +169,7 @@ const StatsContainer = styled.div`
   flex-wrap: wrap;
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
-  transform: rotateY(180deg);
+  // transform: rotateY(180deg);
 `
 const RepName = styled.h1`
   background-color: #242424;
