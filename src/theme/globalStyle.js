@@ -14,9 +14,10 @@ const GlobalStyle = createGlobalStyle`
     // background-image: linear-gradient(to right top, #073590, #23358f, #32348e, #3e348d, #48338c, #5c2b84, #6c227b, #791770, #890057, #90003d, #8f0021, #870000);
     // background-image: linear-gradient(to right top, #325d8d, #6e709b, #9886a6, #b8a0b3, #d0bdc4, #d5bec3, #dabfc2, #dec0c0, #d4a4a4, #c98888, #bd6d6c, #af5151);
     // background-image: linear-gradient(to right top, #b0b0bc, #b6b6c0, #bcbcc4, #c2c2c9, #c8c8cd, #cccbd0, #d0cfd2, #d4d2d5, #d7d4d6, #dad5d8, #ddd7d8, #e0d9d9);
-    background-image: linear-gradient(to right top, #757b84, #80868f, #8c919a, #979da6, #a3a8b1, #adb3bb, #b7bec5, #c1c9cf, #cdd5d9, #dae2e4, #e8eeef, #f6fafa);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    // background-image: linear-gradient(to right top, #757b84, #80868f, #8c919a, #979da6, #a3a8b1, #adb3bb, #b7bec5, #c1c9cf, #cdd5d9, #dae2e4, #e8eeef, #f6fafa);
+    // background-repeat: no-repeat;
+    // background-attachment: fixed;
+    background-color: #fefefe;
     font-family: 'Lato', sans-serif;
     color: #000000;
   }
@@ -59,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .deets-button {
-    width: 80px;
+    width: 60px;
     background-color: #a1a1a1;
     color: #ffffff;
     font-style: italic;

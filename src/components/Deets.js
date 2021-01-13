@@ -2,12 +2,15 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 
+import Loading from './Loading'
+
 // import {NavLink} from 'react-router-dom'
 
 import DataCard from './DataCard'
 
 const Deets = (props) => {
 
+  const [loading, setLoading] = useState(true)
   const [rep, setRep] = useState({})
   const [repData, setRepData] = useState({})
   const [displayedData, setDisplayedData] = useState([])
@@ -100,6 +103,8 @@ const Deets = (props) => {
         //   twitterData = await tweets.json()
         // }
 
+        console.log('voteData.data.results[0].votes', voteData.data.results[0].votes)
+
         const initialQueryResults = {
           rep: repInfo.data,
           votes: voteData.data.results[0].votes,
@@ -114,6 +119,9 @@ const Deets = (props) => {
 
         // set data for the initial
         setDisplayedData(parseDataForDisplay(initialQueryResults))
+
+        // turn off loading animation
+        setLoading(false)
 
       }
 
@@ -147,6 +155,7 @@ const parseDataForDisplay = (data) => {
   votes.map((vote) => {
     const voteObj = {
       type: "vote",
+      key: "V" + vote.bill.bill_id,
       id: vote.bill.bill_id,
       date: vote.date,
       title: vote.description,
@@ -184,10 +193,9 @@ const parseDataForDisplay = (data) => {
         })
     }
 
-    console.log('cosponsors_by_party ', cosponsors_by_party)
-
     const billObj = {
       type: "bill",
+      key: "B" + bill.bill_id,
       id: bill.bill_id,
       bill_type: bill.bill_type,
       date: bill.introduced_date,
@@ -208,8 +216,11 @@ const parseDataForDisplay = (data) => {
     dataToDisplay.push(billObj)
   })
 
+  console.log('explanations', explanations)
+
   explanations.map((explanation) => {
     const explanationObj = {
+      key: "E" + explanations.indexOf(explanation),
       type: "explanation",
       category: explanation.category,
       date: explanation.date,
@@ -221,6 +232,7 @@ const parseDataForDisplay = (data) => {
 
   statements.map((statement) => {
     const statementObj = {
+      key: "S" + statements.indexOf(statement),
       type: "statement",
       statement_type: statement.statement_type,
       date: statement.date,
@@ -243,6 +255,7 @@ const parseDataForDisplay = (data) => {
 
   news.map((article) => {
     const newsObj = {
+      key: "N" + news.indexOf(article),
       type: "news",
       date: article.publishedAt,
       source: article.source.name,
@@ -266,29 +279,40 @@ const parseDataForDisplay = (data) => {
 
   return (
     <>
-    <title>DEETS</title>
-      <h1 className="deets-page">{name}</h1>
-      {/* <h2 className="deets-page">{title}</h2> */}
-      {/* <h5> <NavLink href="/"><a>Back to home</a></NavLink></h5> */}
-      <h3 className="deets-page"><i>Deets</i></h3>
-      <DeetsList>
-        {displayedData.map((row) => (
-          <div>
-            <DataCard key={row.id} row={row} />
-        </div>
-        ))}
-      </DeetsList>
-    <h2>
-      {/* <NavLink as="/" href="/index"> */}
-        <a>Back to home</a>
-      {/* </NavLink> */}
-    </h2>
+    { loading ? <Loading /> :
+      <AllDeets>
+        <title>DEETS</title>
+          <h1 className="deets-page">{name}</h1>
+          {/* <h2 className="deets-page">{title}</h2> */}
+          {/* <h5> <NavLink href="/"><a>Back to home</a></NavLink></h5> */}
+          <h3 className="deets-page"><i>Deets</i></h3>
+          <DeetsList>
+            {displayedData.map((row) => (
+              <div>
+                <DataCard key={row.key} row={row} />
+            </div>
+            ))}
+          </DeetsList>
+        <h2>
+          {/* <NavLink as="/" href="/index"> */}
+            <a>Back to home</a>
+          {/* </NavLink> */}
+        </h2>
+      </AllDeets> }
+
 
     </>
   )
 }
 
 export default Deets
+
+const AllDeets = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
 
 const DeetsList = styled.div`
   display: flex;

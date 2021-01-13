@@ -7,8 +7,8 @@ const Header = () => {
 
   return (
     <Container primary>
-      {/* <Logo src="/images/logo-repdeets.png" alt="Repdeets"/> */}
       <Heading>Repdeets</Heading>
+      <a href="https://github.com/michelinewu/repdeets" target="_blank"><GHLogo src="/images/GH-logo.png" alt="GitHub"/></a>
     </Container>
   )
 }
@@ -24,10 +24,13 @@ const Heading = styled.div`
   font-weight: 900;
   padding-top: 20px;
   width: 100%;
-  background-color: #adb3bb;
+  // background-color: #adb3bb;
+  background-color: #242424;
 `
-
-// const Logo = styled.img`
-//   width: 500px;
-//   height: auto;
-// `
+const GHLogo = styled.img`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: auto;
+`

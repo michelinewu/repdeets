@@ -25,7 +25,7 @@ const DataCard = (props) => {
           <DeetHeading><DeetHeadingText>Vote</DeetHeadingText><DeetDate>{data.date}</DeetDate></DeetHeading>
           <VoteText>
             <Row><Title>{data.title || <NotAvailable>Info Missing:</NotAvailable>}</Title></Row>
-            <Row><Heading>ID:</Heading>{data.id.toUpperCase() || <NotAvailable>Not Available</NotAvailable>}</Row>
+            <Row><Heading>ID:</Heading>{data.id ? data.id.toUpperCase() : <NotAvailable>Not Available</NotAvailable>}</Row>
             <Row><Heading>Description:</Heading></Row>
             <Row><Info>{data.description || <NotAvailable>Not Available</NotAvailable>}</Info></Row>
              {/*More Info: <a href={billUrl} target="_blank">{billUrl}</a>*/}
@@ -57,7 +57,7 @@ const DataCard = (props) => {
           <Row><Heading>Senate Passed:</Heading>{data.senate_passage  || <NotAvailable>Pending Vote</NotAvailable>}</Row>
           <Row><Heading>Vetoed:</Heading>{data.senate_passage  || <NotAvailable>Pending Vote</NotAvailable>}</Row>
           <Row><Heading>Primary Subject:</Heading>{data.primary_subject  || <NotAvailable>Info Missing</NotAvailable>}</Row>
-          <Row><Heading>ID:</Heading>{data.id.toUpperCase()  || <NotAvailable>Info Missing</NotAvailable>}</Row>
+          <Row><Heading>ID:</Heading>{data.id ? data.id.toUpperCase() : <NotAvailable>Info Missing</NotAvailable>}</Row>
           <Row><Heading>Last Major Action Date:</Heading>{data.latest_major_action_date  || <NotAvailable>Info Missing</NotAvailable>}</Row>
           <Row><Heading>Latest Major Action:</Heading>{data.latest_major_action  || <NotAvailable>Info Missing</NotAvailable>}</Row>
           <Row><Heading>Sponsored:</Heading>{data.sponsored  || <NotAvailable>Info Missing</NotAvailable>}</Row>
@@ -66,7 +66,7 @@ const DataCard = (props) => {
             `${party[0]} ${party[1]}`
           }) : ""}</Row> */}
         </Table>
-        <Button href={data.url} target="_blank">More Info</Button>
+        <InfoButton href={data.url} target="_blank">More Info</InfoButton>
         <DeetFooter />
       </DeetsContainer>
     )
@@ -266,4 +266,34 @@ const Info = styled.div`
 
 const NotAvailable = styled.span`
   color: silver;
+`
+const InfoButton = styled.a`
+  width: 120px;
+  background-color: #242424;
+  color: #ffffff;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05em;
+  letter-spacing: 1.45px;
+  font-weight: 750;
+  padding: 10px;
+  margin-left: 30px;
+  margin-right: 10px;
+  margin-top: 20px;
+  text-align: center;
+  border: 0px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  a {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+  }
+
+  :hover {
+    background-color: #a1a1a1;
+  }
+
+  :focus {
+    outline: 1px solid #6d6d6e;
+  }
 `

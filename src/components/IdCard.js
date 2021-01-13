@@ -11,35 +11,40 @@ export const IdCard = (props) => {
   const [statsShown, showStats] = useState(false)
 
   const flipCard = () => {
-    const card = document.getElementById(id)
-
     if (statsShown) {
-      anime({
-        targets: card,
-        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-        rotateY: {value: '+=180', delay: 200},
-        easing: 'easeInOutSine',
-        duration: 400,
-        complete: function(anim){
-          showStats(false)
-        }
-      })
+      showStats(false)
     } else {
-      anime({
-        targets: card,
-        scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
-        rotateY: {value: '+=180', delay: 200},
-        easing: 'easeInOutSine',
-        duration: 600,
-        complete: function(anim){
-          showStats(true)
-        }
-      })
+      showStats(true)
     }
+    // const card = document.getElementById(id)
+
+    // if (statsShown) {
+    //   anime({
+    //     targets: card,
+    //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+    //     rotateY: {value: '+=180', delay: 200},
+    //     easing: 'easeInOutSine',
+    //     duration: 400,
+    //     complete: function(anim){
+    //       showStats(false)
+    //     }
+    //   })
+    // } else {
+    //   anime({
+    //     targets: card,
+    //     scale: [{value: 1}, {value: 1.4}, {value: 1, delay: 250}],
+    //     rotateY: {value: '+=180', delay: 200},
+    //     easing: 'easeInOutSine',
+    //     duration: 600,
+    //     complete: function(anim){
+    //       showStats(true)
+    //     }
+    //   })
+    // }
 
   }
 
-  const {id, title, state, district, first_name, middle_name, last_name, suffix, url} = props
+  const {id, title, state, district, first_name, middle_name, last_name, suffix, url, missed_votes, missed_votes_pct, total_votes, votes_against_party_pct, votes_with_party_pct} = props
 
   const name = [first_name, middle_name, last_name, suffix].join(' ')
 
@@ -66,7 +71,23 @@ export const IdCard = (props) => {
       <Card>
         {statsShown ?
         <StatsContainer>
-          <RepName>Stats</RepName>
+          <RepName>{name}</RepName>
+          <VotesContainer>
+            <Title>Voting Record</Title>
+            <Subtitle>Missed Votes</Subtitle>
+            <VotesRow>Total: {missed_votes}</VotesRow>
+            <VotesRow>Percentage: {missed_votes_pct}%</VotesRow>
+            <PercentageLine width={missed_votes_pct} color="black"/>
+            <FullLine />
+            <Subtitle>Submitted Votes</Subtitle>
+            <VotesRow>Total Votes: {total_votes}</VotesRow>
+            <VotesRow>Votes Against Party: {votes_against_party_pct}%</VotesRow>
+            <VotesRow>Votes With Party: {votes_with_party_pct}%</VotesRow>
+            <MissedVotes>
+              <PercentageLine width={votes_against_party_pct} color="black" /><PercentageLine width={votes_with_party_pct} color="grey" />
+            </MissedVotes>
+            <FullLine />
+          </VotesContainer>
           <MoreInfo>
               {/* <NavButton href={`/${id}`}>deets</NavButton> */}
               <NavLink to={`/${id}`} className="deets-button">deets</NavLink>
@@ -113,31 +134,24 @@ const Container = styled.div`
   flex-direction: column;
   align-items:center;
   flex-wrap: wrap;
-  // position: relative;
   background-color: #ffffff;
   width: 380px;
+  height: 420px;
   margin-bottom: 60px;
   margin-right: 20px;
   margin-left: 20px;
-
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
   perspective: 1400px;
-
+  position: relative;
 `
 const Card = styled.div`
   position: relative;
   height: 100%;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  padding-bottom: 30px;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  // background-color: #ffffff;
   // -webkit-backface-visibility: hidden;
   // backface-visibility: hidden;
 `
-
 const IDContainer = styled.div`
   background-color: #ffffff;
   display: flex;
@@ -146,7 +160,6 @@ const IDContainer = styled.div`
   flex-wrap: wrap;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  // z-index: 1;
 `
 const StatsContainer = styled.div`
   background-color: #ffffff;
@@ -156,10 +169,7 @@ const StatsContainer = styled.div`
   flex-wrap: wrap;
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
-  z-index: 3;
-
-  transform: rotateY(180deg);
-
+  // transform: rotateY(180deg);
 `
 const RepName = styled.h1`
   background-color: #242424;
@@ -221,7 +231,6 @@ const ImageCrop = styled.div`
   overflow: hidden;
   border-radius: 50%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
 `
 const Headshot = styled.img`
   width: 100%;
@@ -229,9 +238,9 @@ const Headshot = styled.img`
 `
 const MoreInfo = styled.div`
   display: flex;
-  justify-content: space-between;
-  // position: absolute;
-  // bottom: 0px;
+  justify-content: space-between
+  position: relative;
+  bottom: 10px;
 `
 const Table = styled.div`
   display: flex;
@@ -244,8 +253,12 @@ const Row = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   position: relative;
-  left: 50px;
+  left: 16px;
   width: 330px;
+`
+const VotesRow = styled(Row)`
+  margin-bottom: 7px;
+  left: 0px;
 `
 const Heading = styled.div`
   font-weight: 650;
@@ -285,4 +298,42 @@ const StatsButton = styled.div`
   :focus {
     outline: 1px solid #6d6d6e;
   }
+`
+const Title = styled.h1`
+  position: relative;
+  text-align: center;
+  font-size: 1.25em;
+  margin-top: 25px;
+  margin-bottom: 0px;
+`
+const Subtitle = styled.h2`
+  position: relative;
+  font-size: 1.15em;
+  margin-bottom: 7px;
+  text-decoration: underline black;
+  text-underline-offset: 2px;
+`
+const VotesContainer = styled.div`
+  position: relative;
+  bottom: 60px;
+  height: 247px;
+  font-size: .95em;
+  margin-bottom: 0px;
+`
+const MissedVotes = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0px;
+`
+const FullLine = styled.div`
+  width: 100%;
+  height: 0px;
+  margin-bottom: 10px;
+  border-top: 1px solid black;
+`
+const PercentageLine = styled.div`
+  width: ${props => props.width + '%' || 0};
+  height: 0px;
+  border-bottom: 5px solid ${props => props.color || 0};
+  overflow: hidden;
 `

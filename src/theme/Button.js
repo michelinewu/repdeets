@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const StyledButton = styled.a`
-  width: 80px;
+  width: 60px;
   background-color: #a1a1a1;
   color: #ffffff;
   font-style: italic;
