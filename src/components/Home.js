@@ -31,9 +31,9 @@ const Home = (props) => {
         const senateData = await axios.get('https://api.propublica.org/congress/v1/116/senate/members.json', options)
         const congressData = await axios.get('https://api.propublica.org/congress/v1/116/house/members.json', options)
 
-        // const reps = senateData.data.results[0].members
-        //   .concat(congressData.data.results[0].members)
         const reps = senateData.data.results[0].members
+          .concat(congressData.data.results[0].members)
+        // const reps = senateData.data.results[0].members
 
         console.log(reps)
 
