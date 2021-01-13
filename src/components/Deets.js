@@ -35,7 +35,7 @@ const Deets = (props) => {
         // REP INFO
         const repInfo = await axios.get(`https://api.propublica.org/congress/v1/members/${bioID}.json`, options)
 
-        // VOTES
+        // VOTES WIP - ATTEMPTING TO PULL CONGRESS.GOV URLS FOR VOTES
         // let votes = await axios.get(`https://api.propublica.org/congress/v1/members/${bioID}/votes.json`, options)
         // // get congress.gov url for every vote
         // const allVotes = votes.data.results[0].votes
@@ -48,7 +48,6 @@ const Deets = (props) => {
         //   // console.log('toReturn ', toReturn)
         //   return Promise.resolve(toReturn)
         // }))
-
 
         const voteData = await axios.get(`https://api.propublica.org/congress/v1/members/${bioID}/votes.json`, options)
 
@@ -68,7 +67,6 @@ const Deets = (props) => {
 
         const name = [repInfo.data.results[0].first_name, repInfo.data.results[0].middle_name, repInfo.data.results[0].last_name].join('+')
 
-
         const url = 'http://newsapi.org/v2/everything?' +
         `q=${name}&` +
         // 'start=2019-08-01&end=2020-11-23' +
@@ -82,37 +80,13 @@ const Deets = (props) => {
         "X-Api-Key": process.env.REACT_APP_NEWS_API_KEY
         }})
 
-        // TWITTER
-
-        // let twitterData = [];
-
-        // if (repInfo.data.results[0].twitter_account !== null) {
-        //   // if there is a twitter account
-
-        //   const twitterHandle = repInfo.data.results[0].twitter_account
-
-        //   // const bearer = "Bearer " + "AAAAAAAAAAAAAAAAAAAAAMTlJwEAAAAAKZTDLrh0uNw9peMxnCG6orSOm2I%3DofEkAVSBwUtudhDTt81QWkSpsF9MT7usm1vOikv7Zpj9BJa98J"
-        //   const bearer = 'Bearer AAAAAAAAAAAAAAAAAAAAAMTlJwEAAAAAKZTDLrh0uNw9peMxnCG6orSOm2I%3DofEkAVSBwUtudhDTt81QWkSpsF9MT7usm1vOikv7Zpj9BJa98J'
-        //   const tweets = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${twitterHandle}&count=100&tweet_mode=extended`, {
-        //   method: "GET",
-        //   dataType: 'json',
-        //   headers: {
-        //     "Authorization": bearer
-        //   }})
-
-        //   twitterData = await tweets.json()
-        // }
-
-        console.log('voteData.data.results[0].votes', voteData.data.results[0].votes)
-
         const initialQueryResults = {
           rep: repInfo.data,
           votes: voteData.data.results[0].votes,
           bills: billData.data.results[0].bills,
           explanations: explanationData.data.results,
           statements: statementData.data.results,
-          news: newsData.data.articles,
-          // twitter: twitterData.data
+          news: newsData.data.articles
         }
 
         setRepData (initialQueryResults)
@@ -128,18 +102,13 @@ const Deets = (props) => {
       fetchRepData()
     }
 
-
-    // setDisplayedData(repData)
-
   },[])
 
   // PARSE DATA
 
 const parseDataForDisplay = (data) => {
 
-  const { votes, bills, explanations, statements, twitter, news } = data
-
-  console.log('news ', news)
+  const { votes, bills, explanations, statements, news } = data
 
   // console.log('repData ', data)
 
@@ -147,7 +116,6 @@ const parseDataForDisplay = (data) => {
   // const bills = props.bills.results[0].bills
   // const explanations = props.explanations.results
   // const statements = props.statements.results
-  // const tweets = props.twitter
   // const newsArticles = props.news.articles
 
   const dataToDisplay = []
@@ -216,8 +184,6 @@ const parseDataForDisplay = (data) => {
     dataToDisplay.push(billObj)
   })
 
-  console.log('explanations', explanations)
-
   explanations.map((explanation) => {
     const explanationObj = {
       key: "E" + explanations.indexOf(explanation),
@@ -242,17 +208,6 @@ const parseDataForDisplay = (data) => {
     dataToDisplay.push(statementObj)
   })
 
-  // if (twitter.length > 0) {
-  //   twitter.map((tweet) => {
-  //     const tweetObj = {
-  //       type: "twitter",
-  //       date: tweet.created_at,
-  //       text: tweet.text
-  //     }
-  //     dataToDisplay.push(tweetObj)
-  //   })
-  // }
-
   news.map((article) => {
     const newsObj = {
       key: "N" + news.indexOf(article),
@@ -275,7 +230,6 @@ const parseDataForDisplay = (data) => {
 }
 
   const name = [rep.first_name, rep.middle_name, rep.last_name].join(' ')
-  // const title = `${rep.roles[0].title.split(' ', 2)[0]} ${rep.roles[0].state}`
 
   return (
     <>
@@ -283,8 +237,6 @@ const parseDataForDisplay = (data) => {
       <AllDeets>
         <title>DEETS</title>
           <h1 className="deets-page">{name}</h1>
-          {/* <h2 className="deets-page">{title}</h2> */}
-          {/* <h5> <NavLink href="/"><a>Back to home</a></NavLink></h5> */}
           <h3 className="deets-page"><i>Deets</i></h3>
           <DeetsList>
             {displayedData.map((row) => (
@@ -294,9 +246,7 @@ const parseDataForDisplay = (data) => {
             ))}
           </DeetsList>
         <h2>
-          {/* <NavLink as="/" href="/index"> */}
-            <a>Back to home</a>
-          {/* </NavLink> */}
+            <a href="/">Back to home</a>
         </h2>
       </AllDeets> }
 
